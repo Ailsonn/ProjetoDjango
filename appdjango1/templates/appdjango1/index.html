@@ -1,0 +1,111 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>Usuários</title>
+
+    <link
+      rel="stylesheet"
+      href="{% static 'appdjango1/css/styles.css' %}?version=1.4"
+    />
+  </head>
+  <body>
+    <nav>
+      <a class="logo" href="#">Usuários<span>.</span> </a>
+      <div class="mobile-menu">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+      <ul class="nav-list">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Todos os Usuários</a></li>
+        <li><a href="#">Informações</a></li>
+        <li><a href="#">Galeria</a></li>
+      </ul>
+    </nav>
+
+    <h2>Todos os Usuários</h2>
+
+    <div class="user">
+      {% for user in users %}
+
+      <div class="dados">
+        <img
+          class="imagem"
+          src="{%if user.foto_perfil%}{{user.foto_perfil.url}}{%endif%}"
+        />
+
+        <p class="nome">{{ user.nome }}</p>
+        <p class="email">{{ user.email }}</p>
+        <p class="nascimento">Nascido em: {{ user.data_nascimento }}</p>
+        <p class="cidade">Cidade natal: {{ user.cidade_natal }}</p>
+
+        <br />
+      </div>
+      {% endfor %}
+    </div>
+
+    <script>
+      class MobileNavbar {
+        constructor(mobileMenu, navList, navLinks) {
+          this.mobileMenu = document.querySelector(mobileMenu);
+          this.navList = document.querySelector(navList);
+          this.navLinks = document.querySelectorAll(navLinks);
+          this.activeClass = "active";
+
+          this.handleClick = this.handleClick.bind(this);
+        }
+
+        animateLinks() {
+          this.navLinks.forEach((link, index) => {
+            link.style.animation
+              ? (link.style.animation = "")
+              : (link.style.animation = `navLinkFade 0.5s ease forwards ${
+                  index / 7 + 0.3
+                }s`);
+          });
+        }
+
+        handleClick() {
+          this.navList.classList.toggle(this.activeClass);
+          this.mobileMenu.classList.toggle(this.activeClass);
+          this.animateLinks();
+        }
+
+        addClickEvent() {
+          this.mobileMenu.addEventListener("click", this.handleClick);
+        }
+
+        init() {
+          if (this.mobileMenu) {
+            this.addClickEvent();
+          }
+          return this;
+        }
+      }
+
+      const mobileNavbar = new MobileNavbar(
+        ".mobile-menu",
+        ".nav-list",
+        ".nav-list li"
+      );
+      mobileNavbar.init();
+    </script>
+
+    <footer>
+      <p>
+        Todas as imagens e dados foram cedidas respeitando as normas da Lei
+        Geral de Proteção de Dados Pessoais (LGPD).
+      </p>
+    </footer>
+  </body>
+</html>
